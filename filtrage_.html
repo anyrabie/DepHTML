@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtrer une liste de voitures</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input {
+            padding: 10px;
+            width: 250px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            margin: 5px;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        #erreur{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Rechercher une voiture</h2>
+    <input type="text" id="searchInput" placeholder="Tapez un modèle...">
+    
+    <ul id="carList">
+        <li>Audi A3</li>
+        <li>Audi Q5</li>
+        <li>BMW X1</li>
+        <li>BMW X5</li>
+        <li>Citroën C3</li>
+        <li>Citroën C4</li>
+        <li>Dacia Duster</li>
+        <li>Ford Focus</li>
+        <li>Ford Mustang</li>
+        <li>Mercedes Classe A</li>
+        <li>Mercedes Classe C</li>
+        <li>Peugeot 208</li>
+        <li>Peugeot 3008</li>
+        <li>Renault Clio</li>
+        <li>Renault Mégane</li>
+        <li>Tesla Model 3</li>
+        <li>Tesla Model Y</li>
+        <li>Volkswagen Golf</li>
+        <li>Volkswagen Polo</li>
+    </ul>
+    <p id="erreur"></p>
+
+    <script>
+        function filterListByStartCharacter(inputId, listId) {
+            var input = document.getElementById(inputId); //obtenir l'element input par son ID
+            var list = document.getElementById(listId);//obtenir la liste par son ID
+            var items = list.querySelectorAll('li');//obtenir les element de la liste par son ID
+            var err = document.getElementById("erreur");
+            let b = 0;
+
+            input.addEventListener('input', function () {//1ere fonction anonyme, cest la fonction(envnt) quelle s'applique lors action  
+                
+                var searchTerm = input.value.toLowerCase();//convertir le text obteni de input au miniscule
+                var hasModified = false;
+                items.forEach(function (item) {//boucle for each ,2eme fonction anonyme (pour faire modification dans chaque item)
+                    var text = item.textContent.toLowerCase();//convertir chaque text de item au miniscule
+                    item.style.display = text.startsWith(searchTerm) ? '' : 'none';//si le text content de item debut par le text sisi dans serch input ce item doit s'afficher, si non pas
+                    if(item.style.display===''&& searchTerm){
+                        item.style.backgroundColor = '#7A9B32';
+                    }else{
+                        item.style.backgroundColor = '#F1F1F1F1'; 
+                    }
+                    let d = Array.from(items).some(it=>it.style.display !== 'none')
+                    if(d==false){
+                        err.innerHTML = '<b>Aucune voiture trouvee</b>';
+                    }else{
+                        err.innerHTML = ''
+                    }
+                });
+            });
+        }
+
+        // Initialisation de la fonction pour l'input et la liste de voitures
+        filterListByStartCharacter('searchInput', 'carList');
+    </script>
+
+</body>
+</html>
